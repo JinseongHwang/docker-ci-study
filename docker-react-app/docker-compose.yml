@@ -1,12 +1,23 @@
 version: "3"
 services:
-  react:
+  react: # 컨테이너 이름
     build:
+      # 도커 이미지를 구성하기 위한 파일과 폴더들이 있는 위치
       context: .
       dockerfile: Dockerfile.dev
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - /usr/src/app/node_modules
       - ./:/usr/src/app
+    # React Application을 종료할 때 필요하다.(상황에 따라 다름)
     stdin_open: true
+
+  test: # 컨테이너 이름
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /usr/src/app/node_modules
+      - ./:/usr/src/app
+    command: [ "npm", "run", "test" ]
